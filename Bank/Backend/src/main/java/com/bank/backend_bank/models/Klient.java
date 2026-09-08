@@ -18,11 +18,23 @@ public class Klient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
+    @Column(updatable = false, nullable = false, unique = true)
     private Long idKlienta;
 
+    @Column(nullable = false)
     private String imie;
+    @Column(nullable = false)
     private String nazwisko;
+
+
+    @Column(nullable = false)
+    private String mail;
+
+    @Column(nullable = false, updatable = false)
+    private String tel;
+
+    @Column(nullable = false, length = 150)
+    private String hasloHash;
 
     @Column(nullable = false, unique = true, updatable = false)
     private String pesel;
