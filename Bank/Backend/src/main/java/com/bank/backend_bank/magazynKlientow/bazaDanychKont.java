@@ -17,7 +17,7 @@ public interface bazaDanychKont extends JpaRepository<Konto, Long> {
     https://docs.spring.io/spring-data/jpa/reference/jpa/transactions.html#page-title
 
     doslownie zrobienie tego interface pozwolilo na wyszukiwanie klientow
-     po id jest to potrzebne do wysylania przelewow nic nie musialem zrobic XD
+     po id jest to potrzebne do wysylania przelewow nic nie musialem zrobic
 
     ten interface moze robic wiele wiecej rzeczy ale narazie nie jest to potrzebne
     */
@@ -30,5 +30,9 @@ public interface bazaDanychKont extends JpaRepository<Konto, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT k FROM Konto k WHERE k.id = :id")
     public Optional<Konto> findByIdLock(@Param("id") Long id);
+
+
+
+    boolean czyNumerZajety(String numerKonta);
 
 }

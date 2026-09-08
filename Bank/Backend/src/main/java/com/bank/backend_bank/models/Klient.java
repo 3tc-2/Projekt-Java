@@ -1,11 +1,15 @@
 package com.bank.backend_bank.models;
 
+import com.bank.backend_bank.uslugi.KlientUslugi;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import com.bank.backend_bank.magazynKlientow.bazaDanychKlientow;
 
 @Entity
 @Table(name = "klienci")
@@ -21,16 +25,19 @@ public class Klient {
     @Column(updatable = false, nullable = false, unique = true)
     private Long idKlienta;
 
+    @Column(nullable = false, unique = true, updatable = false, length = 10)
+    private String numerKlienta;
+
     @Column(nullable = false)
     private String imie;
     @Column(nullable = false)
     private String nazwisko;
 
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String mail;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, unique = true, updatable = false)
     private String tel;
 
     @Column(nullable = false, length = 150)
@@ -47,7 +54,7 @@ public class Klient {
 
 
 
-    public Klient(String imie, String nazwisko, String pesel) {
+    public Klient(String imie, String nazwisko, String mail, String tel, String pesel, String numerKlienta, String hasloHash) {
         if (!isValidPesel(pesel)) {
             throw new IllegalArgumentException("Zly pesel " + pesel); // https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html
             /*
@@ -60,8 +67,10 @@ public class Klient {
 
         this.imie = imie;
         this.nazwisko = nazwisko;
-
         this.pesel = pesel;
+        this.numerKlienta = numerKlienta;
+        this.hasloHash = hasloHash;
+
     }
 
     public boolean dodajKonto(TypKonta typKonta) {

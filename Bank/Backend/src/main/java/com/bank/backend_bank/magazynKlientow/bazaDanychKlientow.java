@@ -4,6 +4,8 @@ import com.bank.backend_bank.models.Klient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface bazaDanychKlientow extends JpaRepository<Klient, Long> {
     /*
@@ -15,4 +17,6 @@ public interface bazaDanychKlientow extends JpaRepository<Klient, Long> {
     ten interface moze robic wiele wiecej rzeczy ale narazie nie jest to potrzebne
     */
 
+
+    boolean czyNumerZajety(String numerKlienta);
 }
