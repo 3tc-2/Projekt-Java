@@ -32,7 +32,8 @@ public interface bazaDanychKont extends JpaRepository<Konto, Long> {
     public Optional<Konto> findByIdLock(@Param("id") Long id);
 
 
-
     boolean czyNumerZajety(String numerKonta);
+
+    Konto findByNumerKonta(String numerKonta);
 
 }

@@ -2,6 +2,7 @@ package com.bank.backend_bank.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,17 +11,18 @@ import java.util.List;
 @Table(name = "konta")
 @Data
 
-
-
-
 public class Konto {
+
+    public Konto() {
+        throw new IllegalArgumentException("Nie podano argumentow do stworzenia konta");
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idKonta;
 
     private String numerKonta;
-    private BigDecimal saldo = BigDecimal.ZERO;
+    private BigDecimal saldo;
 
     @OneToMany(mappedBy = "konto", cascade = CascadeType.ALL)
     private List<Tranzakcja> historiaTranzakcji = new ArrayList<>();

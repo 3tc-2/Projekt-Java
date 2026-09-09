@@ -1,15 +1,11 @@
 package com.bank.backend_bank.models;
 
-import com.bank.backend_bank.uslugi.KlientUslugi;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
-import com.bank.backend_bank.magazynKlientow.bazaDanychKlientow;
 
 @Entity
 @Table(name = "klienci")
@@ -52,7 +48,9 @@ public class Klient {
     @OneToMany(mappedBy = "klient", cascade = CascadeType.ALL)
     private List<Konto> konta = new ArrayList<>();
 
-
+    public Klient() {
+        throw new IllegalArgumentException("Nie podano argumentow do stworzenia Klient");
+    }
 
     public Klient(String imie, String nazwisko, String mail, String tel, String pesel, String numerKlienta, String hasloHash) {
         if (!isValidPesel(pesel)) {
