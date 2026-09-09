@@ -23,7 +23,8 @@ public class KontoUslugi {
     public List<String> getListaNumerowKont(Klient klient) {
         List<String> wynik = new ArrayList<>();
 
-        List<Konto> lista = klient.getKonta();
+        List<Konto> lista = bazaDanychKont.findByIdKlienta(klient.getIdKlienta()); // byl blad LazyInitializationException dlatego trzeba to zrobic w ten sposob
+
         for (Konto konto : lista) {
             if (konto != null) {
                 wynik.add(konto.getNumerKonta());

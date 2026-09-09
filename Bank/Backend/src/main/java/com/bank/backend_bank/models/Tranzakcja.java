@@ -3,21 +3,27 @@ package com.bank.backend_bank.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tranzakcje")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+
+//https://medium.com/@cemdrman/the-n-1-you-didnt-write-lombok-data-on-jpa-entities-1e19848e1b21
+// nie uzywam @Data tutaj
 
 public class Tranzakcja {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idTranzacji;
+    private Long idTranzakcji;
 
 
     @ManyToOne

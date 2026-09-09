@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -28,12 +29,15 @@ public interface bazaDanychKont extends JpaRepository<Konto, Long> {
     // sadze ze jezeli to jest bank i kasa to powinnismy uzyc pesymisty moze mam racje
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT k FROM Konto k WHERE k.id = :id")
+    @Query("SELECT k FROM Konto k WHERE k.idKonta = :id")
     public Optional<Konto> findByIdLock(@Param("id") Long id);
 
 
     boolean czyNumerZajety(String numerKonta);
 
     Konto findByNumerKonta(String numerKonta);
+
+    List<Konto> findByIdKlienta(Long idKlienta);
+
 
 }

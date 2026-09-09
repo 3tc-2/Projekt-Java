@@ -7,14 +7,18 @@ import com.bank.backend_bank.models.Tranzakcja;
 import jakarta.transaction.Transactional;
 
 
-import java.math.BigDecimal;
+import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Objects;
+
+@Service
 public class Przelew {
 
-    private final bazaDanychKont bazadanych;
+    private final bazaDanychKont bazaDanych;
 
-    Przelew(bazaDanychKont bazadanych) {
-        this.bazadanych = bazadanych;
+    Przelew(bazaDanychKont bazaDanych) {
+        this.bazaDanych = bazaDanych;
     }
 
     // to jest taki jak w sql na Rozanie START TRANSACTION
@@ -24,11 +28,13 @@ public class Przelew {
 
     @Transactional
     public boolean wykonajPrzelew(Long idNadawcy, Long idOdbiorcy, BigDecimal kwota) {
-
-        Konto nadawca = this.bazadanych.findByIdLock(idNadawcy) // musimy uzyc naszej nowej funkcji
+        if (Objects.equals(idNadawcy, idOdbiorcy)) {
+            throw new IllegalArgumentException("ID nie moga byc takie same");
+        }
+        Konto nadawca = this.bazaDanych.findByIdLock(idNadawcy) // musimy uzyc naszej nowej funkcji
                 .orElseThrow(() -> new IllegalArgumentException("Nieznaleziono nadawcy"));
 
-        Konto odbiorca = this.bazadanych.findByIdLock(idOdbiorcy)
+        Konto odbiorca = this.bazaDanych.findByIdLock(idOdbiorcy)
                 .orElseThrow(() -> new IllegalArgumentException("Nieznaleziono odbiorca"));
         // (() -> new ... to jest lambda )
 

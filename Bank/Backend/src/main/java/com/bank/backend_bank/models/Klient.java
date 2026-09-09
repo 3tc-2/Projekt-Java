@@ -69,12 +69,20 @@ public class Klient {
         this.numerKlienta = numerKlienta;
         this.hasloHash = hasloHash;
 
+        // tego brakowalo
+        this.mail = mail;
+        this.tel = tel;
+
     }
 
     public boolean dodajKonto(TypKonta typKonta) {
         try {
-            this.konta.add(new Konto(this, typKonta));
+
+            Konto noweKonto = new Konto(this, typKonta);
+            noweKonto.setKlient(this);
+            this.konta.add(noweKonto);
             return true;
+
         } catch (IllegalArgumentException e) {
             System.out.println("Podano null do jednego z argumentow");
             return false;

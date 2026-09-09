@@ -2,6 +2,7 @@ package com.bank.backend_bank.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -10,12 +11,10 @@ import java.util.List;
 @Entity
 @Table(name = "konta")
 @Data
+@NoArgsConstructor
 
 public class Konto {
 
-    public Konto() {
-        throw new IllegalArgumentException("Nie podano argumentow do stworzenia konta");
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +23,11 @@ public class Konto {
     private String numerKonta;
     private BigDecimal saldo;
 
-    @OneToMany(mappedBy = "konto", cascade = CascadeType.ALL)
-    private List<Tranzakcja> historiaTranzakcji = new ArrayList<>();
+    @OneToMany(mappedBy = "nadawca", cascade = CascadeType.ALL)
+    private List<Tranzakcja> transakcjeWychodzace = new ArrayList<>();
+
+    @OneToMany(mappedBy = "odbiorca", cascade = CascadeType.ALL)
+    private List<Tranzakcja> transakcjePrzychodzace = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "id_klienta") // Klucz obcy na klienta abysmy wiedzieli do kogo nalezy konto
@@ -67,11 +69,11 @@ public class Konto {
 
     public void dodajWychodzacaTranzakcje(Tranzakcja transakcja) {
         transakcja.setNadawca(this); // sprawdzam 2 razy
-        this.historiaTranzakcji.add(transakcja);
+        this.transakcjeWychodzace.add(transakcja);
     }
 
     public void dodajPrzychodzacaTranzakcje(Tranzakcja transakcja) {
         transakcja.setOdbiorca(this); // sprawdzam 2 razy
-        this.historiaTranzakcji.add(transakcja);
+        this.transakcjePrzychodzace.add(transakcja);
     }
 }
