@@ -7,4 +7,5 @@
 ### Baza danych
 ![schemat_bazy_market](Market/BazaDanych/Baza_Market_Schemat.png)
 ###
+## Bank
 Powodzenia 3tc
