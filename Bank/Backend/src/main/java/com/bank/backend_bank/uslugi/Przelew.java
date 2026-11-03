@@ -31,10 +31,10 @@ public class Przelew {
         if (Objects.equals(idNadawcy, idOdbiorcy)) {
             throw new IllegalArgumentException("ID nie moga byc takie same");
         }
-        Konto nadawca = this.bazaDanych.findByIdLock(idNadawcy) // musimy uzyc naszej nowej funkcji
+        Konto nadawca = this.bazaDanych.findFirstByKlient_IdKlienta(idNadawcy) // musimy uzyc naszej nowej funkcji
                 .orElseThrow(() -> new IllegalArgumentException("Nieznaleziono nadawcy"));
 
-        Konto odbiorca = this.bazaDanych.findByIdLock(idOdbiorcy)
+        Konto odbiorca = this.bazaDanych.findFirstByKlient_IdKlienta(idOdbiorcy)
                 .orElseThrow(() -> new IllegalArgumentException("Nieznaleziono odbiorca"));
         // (() -> new ... to jest lambda )
 

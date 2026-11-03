@@ -1,6 +1,7 @@
 package com.bank.backend_bank.uslugi;
 
 
+import com.bank.backend_bank.dto.RegisterDTO;
 import com.bank.backend_bank.models.Klient;
 import com.bank.backend_bank.zabezpieczenia.KoderHasla;
 import org.springframework.stereotype.Service;
@@ -27,20 +28,21 @@ public class KlientUslugi { // jeszcze pracuje nad nazwa
         long liczba = 1_000_000_000L + random.nextLong(9_000_000_000L);
         String wynik = String.valueOf(liczba);
 
-        while (this.bazaDanychKlientow.czyNumerZajety(wynik)) {
+        while (this.bazaDanychKlientow.existsByNumerKlienta(wynik)) {
             liczba = 1_000_000_000L + random.nextLong(9_000_000_000L);
             wynik = String.valueOf(liczba);
         }
         return wynik;
     }
 
-    public Klient stworzNowegoKlienta(String pesel, String imie, String nazwisko, String mail, String tel, String haslo){
+    public Klient stworzNowegoKlienta(RegisterDTO registerDTO) {
 
-        if (pesel == null || imie == null || nazwisko == null || mail == null || tel == null || haslo == null) {
+
+        if (registerDTO.getPesel() == null || registerDTO.getName() == null || registerDTO.getSurname() == null || registerDTO.getEmail() == null || registerDTO.getTelefon() == null || registerDTO.getPassword() == null) {
             throw new IllegalArgumentException("W jednym z argumentow znajduje sie null");
         }
 
-        Klient klient = new Klient(imie, nazwisko, mail, tel, pesel, this.wygenerujRandomowyNumer(), this.hashujHaslo(haslo));
+        Klient klient = new Klient(registerDTO.getName(), registerDTO.getSurname(), registerDTO.getEmail(), registerDTO.getTelefon(), registerDTO.getPesel(), this.wygenerujRandomowyNumer(), this.hashujHaslo(registerDTO.getPassword()));
 
         return bazaDanychKlientow.save(klient); // okazalo sie ze to zapisuje w bazie danych i odrazu wzraca go
     }
@@ -53,13 +55,15 @@ public class KlientUslugi { // jeszcze pracuje nad nazwa
 
 
     public Klient zalogujNaKlient(String numerKlienta, String rawPassword) {
-        Klient klient =  bazaDanychKlientow.findByNumerKlienta(numerKlienta);
-        if (klient == null) {
-            throw new RuntimeException("Konto " + numerKlienta + " ma wartosc null");
-        }
+        Klient klient = bazaDanychKlientow.findByNumerKlienta(numerKlienta)
+                .orElseThrow(() -> new RuntimeException(
+                        "Konto " + numerKlienta + " ma wartosc null"
+                ));
+
         if (!passwordEncoder.matches(rawPassword, klient.getHasloHash())) {
             throw new RuntimeException("Niepoprawny haslo do konta");
         }
+
         return klient;
     }
 

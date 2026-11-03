@@ -30,14 +30,15 @@ public interface bazaDanychKont extends JpaRepository<Konto, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT k FROM Konto k WHERE k.idKonta = :id")
-    public Optional<Konto> findByIdLock(@Param("id") Long id);
+    Optional<Konto> findByIdLock(@Param("id") Long id);
 
+    Optional<Konto> findFirstByKlient_IdKlienta(Long idKlienta);
 
-    boolean czyNumerZajety(String numerKonta);
+    List<Konto> findByKlient_IdKlienta(Long idKlienta);
 
-    Konto findByNumerKonta(String numerKonta);
+    boolean existsByNumerKonta(String numerKonta);
 
-    List<Konto> findByIdKlienta(Long idKlienta);
+    Optional<Konto> findByNumerKonta(String numerKonta);
 
 
 }

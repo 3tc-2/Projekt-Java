@@ -23,7 +23,8 @@ public class KontoUslugi {
     public List<String> getListaNumerowKont(Klient klient) {
         List<String> wynik = new ArrayList<>();
 
-        List<Konto> lista = bazaDanychKont.findByIdKlienta(klient.getIdKlienta()); // byl blad LazyInitializationException dlatego trzeba to zrobic w ten sposob
+        List<Konto> lista =
+                bazaDanychKont.findByKlient_IdKlienta(klient.getIdKlienta());
 
         for (Konto konto : lista) {
             if (konto != null) {
@@ -35,10 +36,10 @@ public class KontoUslugi {
     }
 
     public BigDecimal getSaldoKonta(String numerKonta) {
-        Konto konto = bazaDanychKont.findByNumerKonta(numerKonta);
-        if (konto == null) {
-            throw new RuntimeException("Konto " + numerKonta + " ma wartosc null");
-        }
+        Konto konto = bazaDanychKont.findByNumerKonta(numerKonta)
+                .orElseThrow(() -> new RuntimeException(
+                        "Konto " + numerKonta + " ma wartosc null"
+                ));
 
         return konto.getSaldo();
     }
