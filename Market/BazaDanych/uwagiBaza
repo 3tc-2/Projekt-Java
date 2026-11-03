@@ -1,0 +1,11 @@
+2. Co wymaga poprawy?
+Element	Obecnie	Moja propozycja
+Uzytkownicy.haslo	VARCHAR(100)	VARCHAR(255)
+Portfele.saldo	INT	DECIMAL(10,2) lub INT, jeśli tylko pełne złote
+Portfele.id_uzytkownika	Może być NULL i powtarzać się	NOT NULL UNIQUE
+Ogloszenia.tytul	VARCHAR(30)	VARCHAR(100)
+Ogloszenia.cena	INT	DECIMAL(10,2) lub INT
+Ogloszenia.id_uzytkownika	Może być NULL	NOT NULL
+Kwoty transakcji	INT	Ten sam typ co saldo
+Zamowienia.id_transakcji	Może się powtarzać	NOT NULL UNIQUE
+Uzytkownicy.email	Bez UNIQUE	UNIQUE już masz — dobrze!
