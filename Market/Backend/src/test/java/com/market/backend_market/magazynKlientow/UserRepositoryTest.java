@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserRepositoryTest {
 
     @Autowired
-    private UserRepo userRepository;
+    private User_Repo userRepository;
 
     // Przygotowanie przykładowego użytkownika
     private User createTestUser() {

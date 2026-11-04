@@ -1,4 +1,4 @@
-package Controllers;
+package com.market.backend_market.controllers;
 
 import com.market.backend_market.magazynKlientow.User_Repo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +12,13 @@ public class User_Controller {
         this.user_repo = user_repo;
     }
     @GetMapping("/exist/{login}")
-    public boolean exist(
+    public String exist(
             @PathVariable String login
     ) {
-        return user_repo.existsByLogin(login);
+        if (user_repo.existsByLogin(login)){
+            return "exist";
+        }else {
+            return "not exist";
+        }
     }
 }

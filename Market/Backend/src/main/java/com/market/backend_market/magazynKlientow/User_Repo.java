@@ -58,7 +58,7 @@ public class User_Repo {
 
         String sql = """
                 SELECT COUNT(*)
-                FROM `Uzytkownicy`
+                FROM `uzytkownicy`
                 WHERE login = ?
                 """;
 

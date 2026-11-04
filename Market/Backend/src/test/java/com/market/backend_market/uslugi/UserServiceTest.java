@@ -1,11 +1,10 @@
 
 package com.market.backend_market.uslugi;
 
-import com.market.backend_market.magazynKlientow.UserRepo;
+import com.market.backend_market.magazynKlientow.User_Repo;
 import com.market.backend_market.models.User;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.InjectMocks;
@@ -21,7 +20,7 @@ import static org.mockito.Mockito.*;
 class UserServiceTest {
 
     @Mock
-    private UserRepo userRepo;
+    private User_Repo userRepo;
 
     @Mock
     private PasswordEncoder passwordEncoder;
