@@ -1,0 +1,4 @@
+W application.properties nie podlaczylem bazy jakby co, ale baza powinna być git
+
+W klasie Konto.java konstruktor ustawia saldo na zero, ale nie nadaje numeru konta. Dlatego w bazie dopuściłem pusty numer_konta, żeby schemat był zgodny z obecnym kodem
+Rejestracja przez /register zapisuje klienta do tabeli klienci, ale obecnie nie tworzy automatycznie jego konta bankowego
