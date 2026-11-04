@@ -1,0 +1,170 @@
+
+USE Market_Baza;
+
+-- =========================================
+-- 1. UZYTKOWNICY (20 REKORDOW)
+-- =========================================
+
+INSERT INTO Uzytkownicy (imie, nazwisko, login, haslo, email) VALUES
+('Jan', 'Kowalski', 'janek01', 'haslo123', 'jan.kowalski@mail.pl'),
+('Anna', 'Nowak', 'anna02', 'haslo123', 'anna.nowak@mail.pl'),
+('Piotr', 'Wisniewski', 'piotr03', 'haslo123', 'piotr.wisniewski@mail.pl'),
+('Katarzyna', 'Wojcik', 'kasia04', 'haslo123', 'kasia.wojcik@mail.pl'),
+('Tomasz', 'Kaminski', 'tomek05', 'haslo123', 'tomasz.kaminski@mail.pl'),
+('Marta', 'Lewandowska', 'marta06', 'haslo123', 'marta.lew@mail.pl'),
+('Adam', 'Zielinski', 'adam07', 'haslo123', 'adam.zielinski@mail.pl'),
+('Natalia', 'Szymanska', 'natalia08', 'haslo123', 'natalia.szymanska@mail.pl'),
+('Michal', 'Wozniak', 'michal09', 'haslo123', 'michal.wozniak@mail.pl'),
+('Aleksandra', 'Dabrowska', 'ola10', 'haslo123', 'ola.dabrowska@mail.pl'),
+('Pawel', 'Kozlowski', 'pawel11', 'haslo123', 'pawel.kozlowski@mail.pl'),
+('Magdalena', 'Jankowska', 'magda12', 'haslo123', 'magda.jankowska@mail.pl'),
+('Krzysztof', 'Mazur', 'krzysztof13', 'haslo123', 'krzysztof.mazur@mail.pl'),
+('Julia', 'Krawczyk', 'julia14', 'haslo123', 'julia.krawczyk@mail.pl'),
+('Marcin', 'Piotrowski', 'marcin15', 'haslo123', 'marcin.piotrowski@mail.pl'),
+('Zuzanna', 'Grabowska', 'zuzia16', 'haslo123', 'zuzia.grabowska@mail.pl'),
+('Lukasz', 'Nowicki', 'lukasz17', 'haslo123', 'lukasz.nowicki@mail.pl'),
+('Weronika', 'Pawlak', 'wera18', 'haslo123', 'wera.pawlak@mail.pl'),
+('Dawid', 'Michalski', 'dawid19', 'haslo123', 'dawid.michalski@mail.pl'),
+('Karolina', 'Adamczyk', 'karolina20', 'haslo123', 'karolina.adamczyk@mail.pl');
+
+
+-- =========================================
+-- 2. PORTFELE (20 REKORDOW)
+-- =========================================
+
+INSERT INTO Portfele (saldo, id_uzytkownika) VALUES
+(1500, 1),
+(2300, 2),
+(850, 3),
+(4200, 4),
+(1200, 5),
+(3500, 6),
+(900, 7),
+(2700, 8),
+(1800, 9),
+(5000, 10),
+(750, 11),
+(3100, 12),
+(2200, 13),
+(1600, 14),
+(4500, 15),
+(950, 16),
+(3800, 17),
+(1250, 18),
+(2900, 19),
+(2000, 20);
+
+
+-- =========================================
+-- 3. OGLOSZENIA (20 REKORDOW)
+-- =========================================
+
+INSERT INTO Ogloszenia (tytul, opis, kategoria, cena, id_uzytkownika) VALUES
+('Laptop Lenovo', 'Laptop Lenovo IdeaPad, dobry stan, 8GB RAM', 'Elektronika', 1800, 1),
+('Telefon Samsung', 'Samsung Galaxy S21, sprawny, bez uszkodzen', 'Elektronika', 1200, 2),
+('Rower MTB', 'Rower gorski, aluminiowa rama, rozmiar L', 'Sport', 1500, 3),
+('Biurko drewniane', 'Solidne biurko do pracy, kolor dab', 'Dom', 450, 4),
+('Konsola PS5', 'PlayStation 5, pad i komplet kabli', 'Elektronika', 2200, 5),
+('Kurtka zimowa', 'Kurtka meska, rozmiar XL, stan bardzo dobry', 'Odziez', 250, 6),
+('Sluchawki Sony', 'Bezprzewodowe sluchawki Sony z redukcja szumow', 'Elektronika', 600, 7),
+('Buty sportowe', 'Buty Nike, rozmiar 43, malo uzywane', 'Odziez', 300, 8),
+('Monitor LG', 'Monitor LG 27 cali, rozdzielczosc Full HD', 'Elektronika', 700, 9),
+('Ekspres do kawy', 'Automatyczny ekspres do kawy, sprawny', 'Dom', 900, 10),
+('Plecak turystyczny', 'Plecak o pojemnosci 40 litrow', 'Sport', 180, 11),
+('Smartwatch', 'Zegarek inteligentny Xiaomi, stan dobry', 'Elektronika', 350, 12),
+('Stol ogrodowy', 'Stol ogrodowy z drewna, dla 6 osob', 'Dom', 800, 13),
+('Spodnie jeansowe', 'Spodnie meskie, rozmiar 32, kolor niebieski', 'Odziez', 100, 14),
+('Klawiatura mechaniczna', 'Klawiatura gamingowa RGB, sprawna', 'Elektronika', 250, 15),
+('Hulajnoga', 'Hulajnoga miejska, skladana', 'Sport', 400, 16),
+('Lampa biurkowa', 'Lampa LED z regulacja jasnosci', 'Dom', 90, 17),
+('Aparat Canon', 'Aparat cyfrowy Canon z obiektywem', 'Elektronika', 1400, 18),
+('Walizka podrozna', 'Duza walizka na kolkach', 'Inne', 220, 19),
+('Glosnik JBL', 'Glosnik Bluetooth JBL, bardzo dobry stan', 'Elektronika', 300, 20);
+
+
+-- =========================================
+-- 4. TRANSAKCJE BANKOWE (20 REKORDOW)
+-- =========================================
+
+INSERT INTO Transakcje_Bankowe
+(id_portfela, nr_konta, typ, kwota, status, data) VALUES
+(1, 'PL001234567890000000000001', 'Wplata', 500, 'Zakonczona', '2026-01-05 10:30:00'),
+(2, 'PL001234567890000000000002', 'Wyplata', 200, 'Zakonczona', '2026-01-06 12:15:00'),
+(3, 'PL001234567890000000000003', 'Wplata', 300, 'Oczekujaca', '2026-01-07 09:00:00'),
+(4, 'PL001234567890000000000004', 'Wplata', 1000, 'Zakonczona', '2026-01-08 14:20:00'),
+(5, 'PL001234567890000000000005', 'Wyplata', 150, 'Odrzucona', '2026-01-09 16:45:00'),
+(6, 'PL001234567890000000000006', 'Wplata', 700, 'Zakonczona', '2026-01-10 11:10:00'),
+(7, 'PL001234567890000000000007', 'Wyplata', 100, 'Zakonczona', '2026-01-11 13:30:00'),
+(8, 'PL001234567890000000000008', 'Wplata', 450, 'Oczekujaca', '2026-01-12 15:00:00'),
+(9, 'PL001234567890000000000009', 'Wplata', 250, 'Zakonczona', '2026-01-13 08:45:00'),
+(10, 'PL001234567890000000000010', 'Wyplata', 500, 'Zakonczona', '2026-01-14 17:20:00'),
+(11, 'PL001234567890000000000011', 'Wplata', 200, 'Zakonczona', '2026-01-15 10:00:00'),
+(12, 'PL001234567890000000000012', 'Wyplata', 300, 'Oczekujaca', '2026-01-16 12:40:00'),
+(13, 'PL001234567890000000000013', 'Wplata', 600, 'Zakonczona', '2026-01-17 09:30:00'),
+(14, 'PL001234567890000000000014', 'Wyplata', 100, 'Odrzucona', '2026-01-18 14:15:00'),
+(15, 'PL001234567890000000000015', 'Wplata', 800, 'Zakonczona', '2026-01-19 16:00:00'),
+(16, 'PL001234567890000000000016', 'Wplata', 350, 'Zakonczona', '2026-01-20 11:25:00'),
+(17, 'PL001234567890000000000017', 'Wyplata', 250, 'Zakonczona', '2026-01-21 13:50:00'),
+(18, 'PL001234567890000000000018', 'Wplata', 400, 'Oczekujaca', '2026-01-22 15:30:00'),
+(19, 'PL001234567890000000000019', 'Wplata', 550, 'Zakonczona', '2026-01-23 08:20:00'),
+(20, 'PL001234567890000000000020', 'Wyplata', 180, 'Zakonczona', '2026-01-24 18:10:00');
+
+
+-- =========================================
+-- 5. TRANSAKCJE PORTFELOWE (20 REKORDOW)
+-- =========================================
+
+INSERT INTO Transakcje_Portfelowe
+(id_nadawcy, id_odbiorcy, kwota, status, data) VALUES
+(1, 2, 1200, 'Zakonczona', '2026-02-01 10:00:00'),
+(2, 3, 1500, 'Zakonczona', '2026-02-02 11:30:00'),
+(3, 4, 450, 'Oczekujaca', '2026-02-03 12:00:00'),
+(4, 5, 2200, 'Zakonczona', '2026-02-04 13:15:00'),
+(5, 6, 250, 'Odrzucona', '2026-02-05 14:00:00'),
+(6, 7, 600, 'Zakonczona', '2026-02-06 15:30:00'),
+(7, 8, 300, 'Zakonczona', '2026-02-07 16:00:00'),
+(8, 9, 700, 'Oczekujaca', '2026-02-08 17:45:00'),
+(9, 10, 900, 'Zakonczona', '2026-02-09 09:15:00'),
+(10, 11, 180, 'Zakonczona', '2026-02-10 10:45:00'),
+(11, 12, 350, 'Oczekujaca', '2026-02-11 11:00:00'),
+(12, 13, 800, 'Zakonczona', '2026-02-12 12:30:00'),
+(13, 14, 100, 'Zakonczona', '2026-02-13 13:00:00'),
+(14, 15, 250, 'Odrzucona', '2026-02-14 14:30:00'),
+(15, 16, 400, 'Zakonczona', '2026-02-15 15:00:00'),
+(16, 17, 1400, 'Zakonczona', '2026-02-16 16:15:00'),
+(17, 18, 220, 'Oczekujaca', '2026-02-17 17:30:00'),
+(18, 19, 300, 'Zakonczona', '2026-02-18 09:45:00'),
+(19, 20, 550, 'Zakonczona', '2026-02-19 10:20:00'),
+(20, 1, 750, 'Zakonczona', '2026-02-20 11:50:00');
+
+
+-- =========================================
+-- 6. ZAMOWIENIA (20 REKORDOW)
+-- =========================================
+
+INSERT INTO Zamowienia (id_transakcji, id_ogloszenia) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10),
+(11, 11),
+(12, 12),
+(13, 13),
+(14, 14),
+(15, 15),
+(16, 16),
+(17, 17),
+(18, 18),
+(19, 19),
+(20, 20);
+
+
+-- =========================================
+-- KONIEC DANYCH TESTOWYCH
+-- =========================================
