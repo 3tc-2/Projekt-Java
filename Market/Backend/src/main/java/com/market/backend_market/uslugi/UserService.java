@@ -1,7 +1,7 @@
 
 package com.market.backend_market.uslugi;
 
-import com.market.backend_market.magazynKlientow.UserRepo;
+import com.market.backend_market.magazynKlientow.User_Repo;
 import com.market.backend_market.models.User;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    private final UserRepo userRepo;
+    private final User_Repo userRepo;
     private final PasswordEncoder passwordEncoder;
 
     public UserService(
-            UserRepo userRepo,
+            User_Repo userRepo,
             PasswordEncoder passwordEncoder
     ) {
         this.userRepo = userRepo;
