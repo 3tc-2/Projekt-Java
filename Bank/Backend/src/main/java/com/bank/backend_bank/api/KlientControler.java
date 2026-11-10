@@ -2,6 +2,10 @@ package com.bank.backend_bank.api;
 
 //https://spring.io/guides/tutorials/rest
 
+import com.bank.backend_bank.dto.DodajKontoDTO;
+import com.bank.backend_bank.models.Konto;
+import com.bank.backend_bank.models.TypKonta;
+import com.bank.backend_bank.uslugi.KontoUslugi;
 import org.springframework.security.core.Authentication;
 import com.bank.backend_bank.dto.RegisterDTO;
 import com.bank.backend_bank.magazynKlientow.bazaDanychKlientow;
@@ -18,10 +22,16 @@ public class KlientControler {
 
     private final bazaDanychKlientow bazaDanychKlientow;
     private final KlientUslugi klientUslugi;
+    private final KontoUslugi kontoUslugi;
 
-    public KlientControler(bazaDanychKlientow b, KlientUslugi k) {
+    public KlientControler(
+            bazaDanychKlientow b,
+            KlientUslugi k,
+            KontoUslugi kontoUslugi
+    ) {
         this.bazaDanychKlientow = b;
         this.klientUslugi = k;
+        this.kontoUslugi = kontoUslugi;
     }
 
     @GetMapping("/test")
@@ -84,6 +94,50 @@ public class KlientControler {
                         "email", klient.getMail()
                 )
         );
+    }
+
+    @GetMapping("/moje-konta")
+    public ResponseEntity<?> mojeKonta(Authentication authentication) {
+
+        Klient klient = bazaDanychKlientow
+                .findByNumerKlienta(authentication.getName())
+                .orElseThrow();
+
+        return ResponseEntity.ok(
+                kontoUslugi.getMojeKonta(klient)
+        );
+    }
+
+
+
+    @PostMapping("/dodajKonto")
+    public ResponseEntity<?> dodajKonto(
+            @RequestBody java.util.Map<String, String> dane,
+            Authentication authentication
+    ) {
+
+        try {
+            TypKonta typKonta = TypKonta.valueOf(dane.get("typKonta"));
+
+            Klient klient = bazaDanychKlientow
+                    .findByNumerKlienta(authentication.getName())
+                    .orElseThrow();
+
+            Konto konto = kontoUslugi.dodajKonto(klient, typKonta);
+
+            return ResponseEntity.ok(
+                    java.util.Map.of(
+                            "message", "Konto zostało utworzone",
+                            "numerKonta", konto.getNumerKonta(),
+                            "typKonta", konto.getTypKonta().name(),
+                            "saldo", konto.getSaldo()
+                    )
+            );
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body(java.util.Map.of("error", e.getMessage()));
+        }
     }
 
 
