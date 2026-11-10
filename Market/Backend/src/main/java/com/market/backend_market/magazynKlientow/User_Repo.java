@@ -42,7 +42,7 @@ public class User_Repo {
 
         String sql = """
                 SELECT *
-                FROM `Uzytkownicy`
+                FROM Uzytkownicy
                 WHERE login = ?
                 """;
 
@@ -58,7 +58,7 @@ public class User_Repo {
 
         String sql = """
                 SELECT COUNT(*)
-                FROM `uzytkownicy`
+                FROM Uzytkownicy
                 WHERE login = ?
                 """;
 
@@ -75,7 +75,7 @@ public class User_Repo {
     public Long save(User user) {
 
         String sql = """
-                INSERT INTO `Uzytkownicy`
+                INSERT INTO Uzytkownicy
                 (imie, nazwisko, login, haslo, email)
                 VALUES (?, ?, ?, ?, ?)
                 """;
