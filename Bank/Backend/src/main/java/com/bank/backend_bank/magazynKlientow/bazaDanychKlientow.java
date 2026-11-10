@@ -22,5 +22,16 @@ public interface bazaDanychKlientow extends JpaRepository<Klient, Long> {
     boolean existsByNumerKlienta(String numerKlienta);
 
     Optional<Klient> findByNumerKlienta(String numerKlienta);
+    Optional<Klient> findByPesel(String pesel);
 
+    Optional<Klient> findByPeselOrNumerKlienta(
+            String pesel,
+            String numerKlienta
+    );
+
+    boolean existsByMail(String mail);
+
+    boolean existsByPesel(String pesel);
+
+    boolean existsByTel(String tel);
 }

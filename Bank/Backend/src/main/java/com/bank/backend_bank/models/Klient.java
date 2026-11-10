@@ -54,6 +54,7 @@ public class Klient {
 
     public Klient(String imie, String nazwisko, String mail, String tel, String pesel, String numerKlienta, String hasloHash) {
 
+        /*
         if (!isValidPesel(pesel)) {
             throw new IllegalArgumentException("Zly pesel " + pesel); // https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html
             /*
@@ -61,11 +62,11 @@ public class Klient {
                 https://www.w3schools.com/java/java_try_catch.asp
             Oraz jak rzucac wyjatkami :
                 https://www.geeksforgeeks.org/java/throw-throws-java/
-                */
+
 
 
         }
-
+    */
 
         this.imie = imie;
         this.nazwisko = nazwisko;

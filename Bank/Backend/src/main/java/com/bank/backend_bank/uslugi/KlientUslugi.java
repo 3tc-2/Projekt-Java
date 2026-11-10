@@ -37,6 +37,17 @@ public class KlientUslugi { // jeszcze pracuje nad nazwa
 
     public Klient stworzNowegoKlienta(RegisterDTO registerDTO) {
 
+        if (bazaDanychKlientow.existsByMail(registerDTO.getEmail())) {
+            throw new IllegalArgumentException("Ten adres email jest już zajęty");
+        }
+
+        if (bazaDanychKlientow.existsByPesel(registerDTO.getPesel())) {
+            throw new IllegalArgumentException("Klient o podanym PESEL już istnieje");
+        }
+
+        if (bazaDanychKlientow.existsByTel(registerDTO.getTelefon())) {
+            throw new IllegalArgumentException("Ten numer telefonu jest już zajęty");
+        }
 
         if (registerDTO.getPesel() == null || registerDTO.getName() == null || registerDTO.getSurname() == null || registerDTO.getEmail() == null || registerDTO.getTelefon() == null || registerDTO.getPassword() == null) {
             throw new IllegalArgumentException("W jednym z argumentow znajduje sie null");
