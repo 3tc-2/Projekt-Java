@@ -30,6 +30,24 @@ public class UserService {
             String email
     ) {
 
+
+        if (imie == null || imie.isBlank()
+                || nazwisko == null || nazwisko.isBlank()
+                || login == null || login.isBlank()
+                || email == null || email.isBlank()) {
+
+            throw new IllegalArgumentException(
+                    "Wszystkie pola są wymagane"
+            );
+        }
+
+        if (haslo == null || haslo.length() < 8) {
+            throw new IllegalArgumentException(
+                    "Hasło musi mieć minimum 8 znaków"
+            );
+        }
+
+
         if (userRepo.existsByLogin(login)) {
             throw new IllegalArgumentException(
                     "Podany login jest już zajęty"
