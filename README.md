@@ -1,15 +1,18 @@
 # Projekt-Java
 ## Kto co robi
 ### Bank
-BACKEND - Maciek, Szymon  
-BAZA DANYCH - Darek, Nerlo  
-FRONTEND - Emilka, Katia  
+BACKEND - Maciek  
+BAZA DANYCH - Darek, Nerlo  ZROBIONE
+FRONTEND - Emilka, Katia, sofia
 APLIKACJA MOBILNA - Julia, Basia  
 ### Market
-BACKEND - Wiktor, Sofia  
-BAZA DANYCH - Darek, Nerlo  
+BACKEND - Wiktor, Szymon
+BAZA DANYCH - Darek, Nerlo  ZROBIONE 
 FRONTEND - Mikołaj  
-APLIKACJA MOBILNA - Igor, Piotrek  
+APLIKACJA MOBILNA - Igor, Piotrek, Mati
+
+
+osoby wolne  Darek, Nerlo TRZEBA PRZYDZIELIC NOWY TASK 
 
 ## Diagram projektu
 ![diagram](Images/diagram.png)
