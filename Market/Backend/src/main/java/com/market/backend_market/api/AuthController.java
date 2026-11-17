@@ -19,6 +19,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.csrf.CsrfToken;
+import com.market.backend_market.zabezpieczenia.LoginAttemptLimiter;
+
 
 import org.springframework.web.bind.annotation.*;
 
@@ -32,18 +34,23 @@ public class AuthController {
     private final User_Repo userRepo;
     private final AuthenticationManager authenticationManager;
     private final SecurityContextRepository securityContextRepository;
+    private final LoginAttemptLimiter loginAttemptLimiter;
+
 
     public AuthController(
             UserService userService,
             User_Repo userRepo,
             AuthenticationManager authenticationManager,
-            SecurityContextRepository securityContextRepository
+            SecurityContextRepository securityContextRepository,
+            LoginAttemptLimiter loginAttemptLimiter
     ) {
         this.userService = userService;
         this.userRepo = userRepo;
         this.authenticationManager = authenticationManager;
         this.securityContextRepository = securityContextRepository;
+        this.loginAttemptLimiter = loginAttemptLimiter;
     }
+
 
     // Pobieranie tokenu CSRF
     @GetMapping("/csrf")
@@ -83,20 +90,43 @@ public class AuthController {
     }
 
     // Logowanie
+
     @PostMapping("/login")
     public ResponseEntity<?> login(
             @RequestBody LoginRequest request,
             HttpServletRequest httpRequest,
             HttpServletResponse httpResponse
     ) {
-        if (request.login() == null || request.login().isBlank()
-                || request.haslo() == null || request.haslo().isBlank()) {
+        String ip = httpRequest.getRemoteAddr();
+
+        // 1. Sprawdzenie blokady IP
+        if (loginAttemptLimiter.isBlocked(ip)) {
+            long retryAfter =
+                    loginAttemptLimiter.retryAfterSeconds(ip);
+
+            return ResponseEntity.status(429)
+                    .header("Retry-After", String.valueOf(retryAfter))
+                    .body(Map.of(
+                            "error",
+                            "Zbyt wiele prób logowania. Spróbuj ponownie później."
+                    ));
+        }
+
+        // 2. Walidacja danych
+        if (request == null
+                || request.login() == null
+                || request.login().isBlank()
+                || request.haslo() == null
+                || request.haslo().isBlank()) {
 
             return ResponseEntity.badRequest()
-                    .body(Map.of("error", "Podaj login i hasło"));
+                    .body(Map.of(
+                            "error", "Podaj login i hasło"
+                    ));
         }
 
         try {
+            // 3. Uwierzytelnienie użytkownika
             Authentication authentication =
                     authenticationManager.authenticate(
                             UsernamePasswordAuthenticationToken
@@ -106,13 +136,14 @@ public class AuthController {
                                     )
                     );
 
-            // Zmiana identyfikatora sesji po zalogowaniu
+            // 4. Zabezpieczenie przed przejęciem sesji
             if (httpRequest.getSession(false) != null) {
                 httpRequest.changeSessionId();
             } else {
                 httpRequest.getSession(true);
             }
 
+            // 5. Zapis uwierzytelnienia w sesji
             SecurityContext context =
                     SecurityContextHolder.createEmptyContext();
 
@@ -125,9 +156,13 @@ public class AuthController {
                     httpResponse
             );
 
+            // 6. Pobranie danych zalogowanego użytkownika
             User user = userRepo
                     .findByLogin(authentication.getName())
                     .orElseThrow();
+
+            // 7. Wyzerowanie licznika błędów
+            loginAttemptLimiter.loginSucceeded(ip);
 
             return ResponseEntity.ok(Map.of(
                     "message", "Zalogowano pomyślnie",
@@ -136,13 +171,19 @@ public class AuthController {
             ));
 
         } catch (AuthenticationException e) {
+
+            // 8. Zapisanie nieudanej próby
+            loginAttemptLimiter.loginFailed(ip);
+
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of(
-                            "error", "Nieprawidłowy login lub hasło"
+                            "error",
+                            "Nieprawidłowy login lub hasło"
                     ));
         }
     }
+
 
     // Dane zalogowanego użytkownika
     @GetMapping("/me")
