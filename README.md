@@ -18,8 +18,6 @@ APLIKACJA MOBILNA - Igor, Piotrek, Mati
 ## Struktura plików
 ![struktura](Images/struktura_plikow.png)
 
-## Link do zadan
-https://app.asana.com/1/1220609803856878/project/1220618715523179/board/1220618549943953
 
 ## Bank
 
