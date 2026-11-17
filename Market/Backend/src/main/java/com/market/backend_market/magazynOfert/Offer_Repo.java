@@ -1,8 +1,6 @@
 package com.market.backend_market.magazynOfert;
 
-import com.market.backend_market.magazynKlientow.User_Row_Mapper;
 import com.market.backend_market.models.Offer;
-import com.market.backend_market.models.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -10,16 +8,18 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class Offer_Repo {
 
-
     private final JdbcTemplate jdbcTemplate;
+
     public Offer_Repo(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
     // Wyszukiwanie Oferty po ID
     public Optional<Offer> findById(Long id) {
         String sql = """
@@ -34,20 +34,20 @@ public class Offer_Repo {
         ).stream().findFirst();
     }
     // Wyszukiwanie ofert po tytule
-    public Optional<Offer> findByTitle(String tytul) {
+    public List<Offer> findByTitle(String tytul) {
         String sql = """
                SELECT *
-               FROM `Uzytkownicy`
-               WHERE tytul = ?
+               FROM `ogloszenia`
+               WHERE tytul LIKE ?
                """;
         return jdbcTemplate.query(
                 sql,
                 new Offer_Row_Mapper(),
-                tytul
-        ).stream().findFirst();
+                "%" + tytul + "%"
+        );
     }
     // Wyszukiwanie ofert po kategorii
-    public Optional<Offer> findByLogin(String kategoria) {
+    public List<Offer> findByCategory(String kategoria) {
         String sql = """
                SELECT *
                FROM `ogloszenia`
@@ -57,11 +57,11 @@ public class Offer_Repo {
                 sql,
                 new Offer_Row_Mapper(),
                 kategoria
-        ).stream().findFirst();
+        );
     }
 
     // Wyszukiwanie po id_uzytkownika
-    public Optional<Offer> existsByUserId(String id_uzytkownika) {
+    public List<Offer> findByUserId(int id_uzytkownika) {
         String sql = """
                SELECT *
                FROM `ogloszenia`
@@ -71,14 +71,14 @@ public class Offer_Repo {
                 sql,
                 new Offer_Row_Mapper(),
                 id_uzytkownika
-        ).stream().findFirst();
+        );
 
     }
     // Dodawanie nowej oferty
     public boolean newOffer(Offer offer) {
         String sql = """
                INSERT INTO `ogloszenia`
-               (tytul, opis, kategoria, cena, id_uztkownika)
+               (tytul, opis, kategoria, cena, id_uzytkownika)
                VALUES (?, ?, ?, ?, ?)
                """;
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -93,11 +93,8 @@ public class Offer_Repo {
             ps.setDouble(4, offer.getPrice());
             ps.setLong(5, offer.getUser_id());
             return ps;}, keyHolder);
-        if (keyHolder.getKey() == null) {
-            return false;
-        }else {
-        return keyHolder.getKey().equals(offer.getUser_id());
-        }
+
+            return keyHolder.getKey() != null;
     }
     // Edycja oferty
     public boolean editOffer(Offer offer) {
@@ -113,13 +110,7 @@ public class Offer_Repo {
             ps.setString(3, offer.getKategory());
             ps.setDouble(4, offer.getPrice());
             return ps;});
-        if(rows < 0) {
-            throw new IllegalStateException(
-                    "Aktualizaja nie powiodła się"
-            );
-        }else{
-            return true;
-        }
+        return rows > 0;
     }
     // Usuwanie ogłoszenia
     public boolean deleteOffer(Long id) {
@@ -133,13 +124,7 @@ public class Offer_Repo {
             return ps;
 
         } );
-        if (parse < 0) {
-            throw new IllegalStateException(
-                    "Nie udało się usunąć oferty"
-            );
-        }else {
-            return true;
-        }
+        return parse > 0;
     }
 
     }
