@@ -90,11 +90,10 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/api/auth/csrf",
                                 "/api/auth/register",
-                                "/api/auth/login",
-                                "/api/auth/csrf"
+                                "/api/auth/login"
                         ).permitAll()
-
                         .anyRequest().authenticated()
                 )
 
