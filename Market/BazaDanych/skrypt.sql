@@ -19,8 +19,9 @@ CREATE TABLE Uzytkownicy (
     imie VARCHAR(30) NOT NULL,
     nazwisko VARCHAR(30) NOT NULL,
     login VARCHAR(50) NOT NULL UNIQUE,
-    haslo VARCHAR(100) NOT NULL,
-    email VARCHAR(50) NOT NULL UNIQUE
+    haslo VARCHAR(255) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    czy_admin BOOLEAN NOT NULL DEFAULT FALSE
 ) ENGINE=InnoDB;
 
 
@@ -30,8 +31,8 @@ CREATE TABLE Uzytkownicy (
 
 CREATE TABLE Portfele (
     id_portfela INT AUTO_INCREMENT PRIMARY KEY,
-    saldo INT,
-    id_uzytkownika INT,
+    saldo DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    id_uzytkownika INT NOT NULL UNIQUE,
 
     CONSTRAINT fk_portfele_uzytkownicy
         FOREIGN KEY (id_uzytkownika)
@@ -45,11 +46,11 @@ CREATE TABLE Portfele (
 
 CREATE TABLE Ogloszenia (
     id_ogloszenia INT AUTO_INCREMENT PRIMARY KEY,
-    tytul VARCHAR(30),
+    tytul VARCHAR(100) NOT NULL,
     opis VARCHAR(300),
     kategoria VARCHAR(30),
-    cena INT,
-    id_uzytkownika INT,
+    cena DECIMAL(10,2) NOT NULL,
+    id_uzytkownika INT NOT NULL,
 
     CONSTRAINT fk_ogloszenia_uzytkownicy
         FOREIGN KEY (id_uzytkownika)
@@ -63,12 +64,12 @@ CREATE TABLE Ogloszenia (
 
 CREATE TABLE Transakcje_Bankowe (
     id_transakcji INT AUTO_INCREMENT PRIMARY KEY,
-    id_portfela INT,
+    id_portfela INT NOT NULL,
     nr_konta VARCHAR(50),
-    typ VARCHAR(30),
-    kwota INT,
-    status VARCHAR(30),
-    data DATETIME,
+    typ VARCHAR(30) NOT NULL,
+    kwota DECIMAL(10,2) NOT NULL,
+    status VARCHAR(30) NOT NULL,
+    data DATETIME NOT NULL,
 
     CONSTRAINT fk_transakcje_bankowe_portfele
         FOREIGN KEY (id_portfela)
@@ -82,11 +83,11 @@ CREATE TABLE Transakcje_Bankowe (
 
 CREATE TABLE Transakcje_Portfelowe (
     id_transakcji INT AUTO_INCREMENT PRIMARY KEY,
-    id_nadawcy INT,
-    id_odbiorcy INT,
-    kwota INT,
-    status VARCHAR(30),
-    data DATETIME,
+    id_nadawcy INT NOT NULL,
+    id_odbiorcy INT NOT NULL,
+    kwota DECIMAL(10,2) NOT NULL,
+    status VARCHAR(30) NOT NULL,
+    data DATETIME NOT NULL,
 
     CONSTRAINT fk_transakcje_portfelowe_nadawca
         FOREIGN KEY (id_nadawcy)
@@ -104,8 +105,8 @@ CREATE TABLE Transakcje_Portfelowe (
 
 CREATE TABLE Zamowienia (
     id_zamowienia INT AUTO_INCREMENT PRIMARY KEY,
-    id_transakcji INT,
-    id_ogloszenia INT,
+    id_transakcji INT NOT NULL UNIQUE,
+    id_ogloszenia INT NOT NULL,
 
     CONSTRAINT fk_zamowienia_transakcje
         FOREIGN KEY (id_transakcji)
