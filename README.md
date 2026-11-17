@@ -2,12 +2,12 @@
 ## Kto co robi
 ### Bank
 BACKEND - Maciek  
-BAZA DANYCH - Darek, Nerlo  ZROBIONE
-FRONTEND - Emilka, Katia, sofia
+BAZA DANYCH - Darek, Nerlo  ZROBIONE  
+FRONTEND - Emilka, Katia, sofia  
 APLIKACJA MOBILNA - Julia, Basia  
 ### Market
-BACKEND - Wiktor, Szymon
-BAZA DANYCH - Darek, Nerlo  ZROBIONE 
+BACKEND - Wiktor, Szymon  
+BAZA DANYCH - Darek, Nerlo  ZROBIONE  
 FRONTEND - Mikołaj  
 APLIKACJA MOBILNA - Igor, Piotrek, Mati
 
