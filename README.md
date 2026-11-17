@@ -255,6 +255,7 @@ Rejestracja, logowanie i pobieranie profilu zostały sprawdzone ręcznie. Endpoi
 - Po odświeżeniu strony stan zalogowania można sprawdzić przez `GET /api/auth/me`.
 - Dokumentacja obejmuje wyłącznie moduł użytkowników i uwierzytelniania. API ogłoszeń, portfeli i zamówień będzie dokumentowane osobno.
 
-
+## Link do zadan
+https://app.asana.com/1/1220609803856878/project/1220618715523179/board/1220618549943953
 
 Powodzenia 3tc
