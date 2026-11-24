@@ -1,0 +1,22 @@
+.answer{
+    color: black;
+    font-size: 18px;
+
+
+}
+.answers {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+.selected {
+    background-color: #d3d3d3;
+    font-weight: 700px;
+}
+.correct {
+    color: green;
+}
+.incorrect {
+    color: red;
+}
