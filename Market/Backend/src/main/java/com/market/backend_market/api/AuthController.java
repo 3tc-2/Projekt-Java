@@ -7,6 +7,7 @@ import com.market.backend_market.uslugi.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import com.market.backend_market.uslugi.PasswordResetService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final SecurityContextRepository securityContextRepository;
     private final LoginAttemptLimiter loginAttemptLimiter;
+    private final PasswordResetService passwordResetService;
 
 
     public AuthController(
@@ -42,13 +44,15 @@ public class AuthController {
             User_Repo userRepo,
             AuthenticationManager authenticationManager,
             SecurityContextRepository securityContextRepository,
-            LoginAttemptLimiter loginAttemptLimiter
+            LoginAttemptLimiter loginAttemptLimiter,
+            PasswordResetService passwordResetService
     ) {
         this.userService = userService;
         this.userRepo = userRepo;
         this.authenticationManager = authenticationManager;
         this.securityContextRepository = securityContextRepository;
         this.loginAttemptLimiter = loginAttemptLimiter;
+        this.passwordResetService = passwordResetService;
     }
 
 
@@ -201,4 +205,82 @@ public class AuthController {
                 "email", user.getMail()
         ));
     }
+
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(
+            @RequestBody ChangePasswordRequest request,
+            Authentication authentication,
+            HttpServletRequest httpRequest
+    ) {
+
+        try {
+            // 1. Login pobieramy z zalogowanej sesji
+            String login = authentication.getName();
+
+            // 2. Zmiana hasła w bazie danych
+            userService.changePassword(
+                    login,
+                    request.oldPassword(),
+                    request.newPassword()
+            );
+
+            // 3. Unieważnienie obecnej sesji
+            var session = httpRequest.getSession(false);
+
+            if (session != null) {
+                session.invalidate();
+            }
+
+            SecurityContextHolder.clearContext();
+
+            // 4. Odpowiedź
+            return ResponseEntity.ok(Map.of(
+                    "message",
+                    "Hasło zostało zmienione. Zaloguj się ponownie."
+            ));
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of(
+                            "error", e.getMessage()
+                    ));
+        }
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(
+            @RequestBody ForgotPasswordRequest request
+    ) {
+        passwordResetService.forgotPassword(request.email());
+
+        return ResponseEntity.ok(Map.of(
+                "message",
+                "Jeśli konto istnieje, wysłaliśmy instrukcję resetowania hasła."
+        ));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(
+            @RequestBody ResetPasswordRequest request
+    ) {
+        try {
+            passwordResetService.resetPassword(
+                    request.token(),
+                    request.newPassword()
+            );
+
+            return ResponseEntity.ok(Map.of(
+                    "message",
+                    "Hasło zostało zmienione. Możesz się zalogować."
+            ));
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(
+                    Map.of("error", e.getMessage())
+            );
+        }
+    }
+
+
 }
