@@ -136,4 +136,77 @@ public class UserService {
         // 10. Zapis do bazy danych
         return userRepo.save(user);
     }
+
+    public void changePassword(
+            String login,
+            String oldPassword,
+            String newPassword
+    ) {
+
+        // 1. Walidacja pól
+        if (oldPassword == null || oldPassword.isBlank()
+                || newPassword == null || newPassword.isBlank()) {
+
+            throw new IllegalArgumentException(
+                    "Obecne i nowe hasło są wymagane"
+            );
+        }
+
+        // 2. Walidacja nowego hasła
+        int passwordBytes = newPassword
+                .getBytes(StandardCharsets.UTF_8)
+                .length;
+
+        if (newPassword.length() < 8 || passwordBytes > 72) {
+            throw new IllegalArgumentException(
+                    "Nowe hasło musi mieć minimum 8 znaków " +
+                            "i maksymalnie 72 bajty UTF-8"
+            );
+        }
+
+        // 3. Pobieranie użytkownika z bazy
+        User user = userRepo.findByLogin(login)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Nie znaleziono użytkownika"
+                        )
+                );
+
+        // 4. Sprawdzanie obecnego hasła
+        if (!passwordEncoder.matches(
+                oldPassword,
+                user.getHaslo()
+        )) {
+            throw new IllegalArgumentException(
+                    "Nieprawidłowe obecne hasło"
+            );
+        }
+
+        // 5. Sprawdzanie czy hasło się zmienia
+        if (passwordEncoder.matches(
+                newPassword,
+                user.getHaslo()
+        )) {
+            throw new IllegalArgumentException(
+                    "Nowe hasło musi być inne niż obecne"
+            );
+        }
+
+        // 6. Hashowanie nowego hasła
+        String newPasswordHash =
+                passwordEncoder.encode(newPassword);
+
+        // 7. Aktualizacja hasła w MySQL
+        boolean updated = userRepo.updatePassword(
+                user.getId(),
+                newPasswordHash
+        );
+
+        if (!updated) {
+            throw new IllegalStateException(
+                    "Nie udało się zmienić hasła"
+            );
+        }
+    }
+
 }
