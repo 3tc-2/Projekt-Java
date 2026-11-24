@@ -1,13 +1,17 @@
 package com.market.backend_market.magazynOfert;
 
+import com.market.backend_market.magazynKlientow.User_Repo;
 import com.market.backend_market.models.Offer;
+import com.market.backend_market.models.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,8 +20,37 @@ public class Offer_Repo {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public Offer_Repo(JdbcTemplate jdbcTemplate) {
+    private final User_Repo userRepo;
+
+    public Offer_Repo(JdbcTemplate jdbcTemplate, User_Repo userRepo) {
         this.jdbcTemplate = jdbcTemplate;
+        this.userRepo = userRepo;
+    }
+    public Long getCurrentUserId(Authentication authentication) {
+        if (authentication == null
+                || !authentication.isAuthenticated()
+                || "anonymousUser".equals(authentication.getPrincipal())) {
+            throw new IllegalStateException("Użytkownik nie jest zalogowany");
+        }
+
+        String login = authentication.getName();
+        return userRepo.findByLogin(login)
+                .map(User::getId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Nie znaleziono użytkownika o loginie: " + login
+                ));
+    }
+
+    private String resolveOrderBy(String sortBy, String direction) {
+        String column = switch (sortBy == null ? "" : sortBy.toLowerCase()) {
+            case "cena", "price" -> "cena";
+            case "tytul", "title" -> "tytul";
+            case "kategoria", "category" -> "kategoria";
+            default -> "id_ogloszenia";
+        };
+
+        String dir = "desc".equalsIgnoreCase(direction) ? "DESC" : "ASC";
+        return column + " " + dir;
     }
 
     // Wyszukiwanie Oferty po ID
@@ -72,10 +105,14 @@ public class Offer_Repo {
                 new Offer_Row_Mapper(),
                 id_uzytkownika
         );
-
     }
+
+
     // Dodawanie nowej oferty
-    public boolean newOffer(Offer offer) {
+    public boolean newOffer(Offer offer, Authentication authentication) {
+
+        long currentUserId = getCurrentUserId(authentication);
+
         String sql = """
                INSERT INTO `ogloszenia`
                (tytul, opis, kategoria, cena, id_uzytkownika)
@@ -91,17 +128,20 @@ public class Offer_Repo {
             ps.setString(2, offer.getDescription());
             ps.setString(3, offer.getKategory());
             ps.setDouble(4, offer.getPrice());
-            ps.setLong(5, offer.getUser_id());
+            ps.setLong(5, currentUserId);
             return ps;}, keyHolder);
 
             return keyHolder.getKey() != null;
     }
     // Edycja oferty
-    public boolean editOffer(Offer offer) {
+    public boolean editOffer(Offer offer, Authentication authentication) {
+
+        Long currentUserId = getCurrentUserId(authentication);
+
         String sql = """
            UPDATE `ogloszenia`
-           SET opis = ?, description = ?, kategory = ?, cena = ?
-           WHERE id_ogloszenia = ?;
+           SET tytul = ?, opis = ?, kategoria = ?, cena = ?
+           WHERE id_ogloszenia = ? AND id_uzytkownika = ?;
            """;
         int rows = jdbcTemplate.update(connection ->{
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -109,22 +149,82 @@ public class Offer_Repo {
             ps.setString(2, offer.getDescription());
             ps.setString(3, offer.getKategory());
             ps.setDouble(4, offer.getPrice());
+            ps.setLong(5, offer.getUser_id());
+            ps.setLong(6, currentUserId);
+
             return ps;});
         return rows > 0;
     }
     // Usuwanie ogłoszenia
-    public boolean deleteOffer(Long id) {
+    public boolean deleteOffer(Long id, Authentication authentication) {
+
+        Long curretUserId = getCurrentUserId(authentication);
+
         String sql = """
             DELETE FROM `ogloszenia`
-            WHERE id_ogloszenia = ?
+            WHERE id_ogloszenia = ? AND id_uzytkownika = ?
             """;
         int parse = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setLong(1, id);
+            ps.setLong(2, curretUserId);
             return ps;
 
         } );
         return parse > 0;
+    }
+
+    public List<Offer> searchOffers(
+            String query,
+            String category,
+            Double minPrice,
+            Double maxPrice,
+            Long userId,
+            String sortBy,
+            String direction,
+            int page,
+            int size
+    ) {
+        int safePage = Math.max(page, 0);
+        int safeSize = Math.min(Math.max(size, 1), 100);
+        int offset = safePage * safeSize;
+
+        StringBuilder sql = new StringBuilder("SELECT * FROM Ogloszenia WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        if (query != null && !query.isBlank()) {
+            String pattern = "%" + query.trim() + "%";
+            sql.append(" AND (LOWER(tytul) LIKE LOWER(?) OR LOWER(opis) LIKE LOWER(?))");
+            params.add(pattern);
+            params.add(pattern);
+        }
+
+        if (category != null && !category.isBlank()) {
+            sql.append(" AND kategoria = ?");
+            params.add(category.trim());
+        }
+
+        if (minPrice != null) {
+            sql.append(" AND cena >= ?");
+            params.add(minPrice);
+        }
+
+        if (maxPrice != null) {
+            sql.append(" AND cena <= ?");
+            params.add(maxPrice);
+        }
+
+        if (userId != null) {
+            sql.append(" AND id_uzytkownika = ?");
+            params.add(userId);
+        }
+
+        sql.append(" ORDER BY ").append(resolveOrderBy(sortBy, direction));
+        sql.append(" LIMIT ? OFFSET ?");
+        params.add(safeSize);
+        params.add(offset);
+
+        return jdbcTemplate.query(sql.toString(), new Offer_Row_Mapper(), params.toArray());
     }
 
     }
