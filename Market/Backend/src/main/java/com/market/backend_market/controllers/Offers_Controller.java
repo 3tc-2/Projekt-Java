@@ -2,6 +2,7 @@ package com.market.backend_market.controllers;
 
 import com.market.backend_market.magazynOfert.Offer_Repo;
 import com.market.backend_market.models.Offer;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,8 +43,8 @@ public class Offers_Controller {
     }
 
     @PostMapping("/addOffer")
-    public Boolean addOffer(@RequestBody Offer offer) {
-        if (offer_Repo.newOffer(offer)){
+    public Boolean addOffer(@RequestBody Offer offer, @RequestParam Authentication authentication) {
+        if (offer_Repo.newOffer(offer, authentication)){
             return true;
         }else {
             return false;
@@ -51,8 +52,8 @@ public class Offers_Controller {
     }
 
     @PutMapping("/updateOffer")
-    public Boolean updateOffer(@RequestBody Offer offer) {
-        if (offer_Repo.editOffer(offer)){
+    public Boolean updateOffer(@RequestBody Offer offer, @RequestParam Authentication authentication) {
+        if (offer_Repo.editOffer(offer, authentication)){
             return true;
         }else {
             return false;
@@ -60,12 +61,26 @@ public class Offers_Controller {
     }
 
     @DeleteMapping("/deleteOffer/{id}")
-    public Boolean deleteOffer(@PathVariable Long id) {
-        if (offer_Repo.deleteOffer(id)){
+    public Boolean deleteOffer(@PathVariable Long id, @RequestParam Authentication authentication) {
+        if (offer_Repo.deleteOffer(id, authentication)){
             return true;
         }else {
             return false;
         }
+    }
+    @GetMapping
+    public List<Offer> getOffers(
+            @RequestParam(required = false) String q,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) Long userId,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
+    ) {
+        return offer_Repo.searchOffers(q, category, minPrice, maxPrice, userId, sortBy, direction, page, size);
     }
 
 
