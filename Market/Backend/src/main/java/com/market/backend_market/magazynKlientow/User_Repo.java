@@ -125,4 +125,24 @@ public class User_Repo {
 
         return count != null && count > 0;
     }
+
+
+    public boolean updatePassword(Long userId, String passwordHash) {
+
+        String sql = """
+            UPDATE Uzytkownicy
+            SET haslo = ?
+            WHERE id_uzytkownika = ?
+            """;
+
+        int updatedRows = jdbcTemplate.update(
+                sql,
+                passwordHash,
+                userId
+        );
+
+        return updatedRows == 1;
+    }
+
+
 }
