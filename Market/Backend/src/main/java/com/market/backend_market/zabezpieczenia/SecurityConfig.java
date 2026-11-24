@@ -92,8 +92,11 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/auth/csrf",
                                 "/api/auth/register",
-                                "/api/auth/login"
+                                "/api/auth/login",
+                                "/api/auth/forgot-password",
+                                "/api/auth/reset-password"
                         ).permitAll()
+
                         .anyRequest().authenticated()
                 )
 
