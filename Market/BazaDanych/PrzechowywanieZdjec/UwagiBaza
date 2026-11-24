@@ -1,0 +1,8 @@
+Backend powinien pobierać zdjęcia jako MultipartFile i konwertować je na byte[].
+Zdjęcia powinny być zapisywane w kolumnie zdjecie typu LONGBLOB.
+Należy obsłużyć dodawanie, pobieranie oraz usuwanie zdjęć.
+Sugerowany maksymalny rozmiar zdjęcia to 5 MB.
+Sugerowane obsługiwane formaty: JPG, PNG, WEBP.
+Frontend powinien umożliwiać wybieranie kilku zdjęć z komputera.
+Backend powinien sprawdzać format pliku oraz uprawnienia użytkownika.
+Usunięcie ogłoszenia automatycznie usuwa przypisane do niego zdjęcia dzięki ON DELETE CASCADE.
