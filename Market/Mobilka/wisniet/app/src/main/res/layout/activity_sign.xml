@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#595959"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Załóż konto"
+            android:textColor="#D9D9D9"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="24dp"
+            android:text="Dołącz do WiśNiet i zacznij kupować"
+            android:textColor="#A58D8F"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/inputImie"
+            style="@style/WisInput"
+            android:hint="Imię"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/inputNazwisko"
+            style="@style/WisInput"
+            android:layout_marginTop="12dp"
+            android:hint="Nazwisko"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/inputEmail"
+            style="@style/WisInput"
+            android:layout_marginTop="12dp"
+            android:hint="E-mail"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/inputLogin2"
+            style="@style/WisInput"
+            android:layout_marginTop="12dp"
+            android:hint="Login"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/inputPassword2"
+            style="@style/WisInput"
+            android:layout_marginTop="12dp"
+            android:hint="Hasło (min. 6 znaków)"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/submitButton3"
+            style="@style/WisButton"
+            android:layout_marginTop="24dp"
+            android:text="Zarejestruj się" />
+
+    </LinearLayout>
+</ScrollView>

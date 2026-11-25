@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#595959"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:layout_width="360dp"
+        android:layout_height="360dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="-100dp"
+        android:layout_marginBottom="-40dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/tlo_wisnia" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="600dp"
+            android:orientation="vertical"
+            android:padding="32dp">
+
+            <ImageView
+                android:layout_width="88dp"
+                android:layout_height="88dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="WiśNiet"
+                android:textColor="#D9D9D9"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="32dp"
+                android:text="Kupuj i sprzedawaj to, co kochasz"
+                android:textColor="#A58D8F"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/inputLogin"
+                style="@style/WisInput"
+                android:hint="Login"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/inputPassword"
+                style="@style/WisInput"
+                android:layout_marginTop="12dp"
+                android:hint="Hasło"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/submitButton"
+                style="@style/WisButton"
+                android:layout_marginTop="20dp"
+                android:text="Zaloguj się" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="lub"
+                android:textColor="#A58D8F"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/submitButton2"
+                style="@style/WisButtonOutline"
+                android:text="Załóż konto" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>
