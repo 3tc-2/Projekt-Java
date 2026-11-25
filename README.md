@@ -30,6 +30,10 @@ APLIKACJA MOBILNA - Igor, Piotrek, Mati
 ## Postman market
 https://smieszek-1674-s-team.postman.co/workspace/My-Workspace~f607de6d-c7a0-4daf-857f-1144c455c624/collection/25728973-c660fb77-d643-4fde-884a-9b50ba880e66?action=share&creator=25728973
 
+### dane do konfiguracji w idle
+
+MARKET_MAIL_USERNAME=wisnet3tc@gmail.com;MARKET_MAIL_PASSWORD=estq anjf ldxr sloy
+
 ## Market — Dokumentacja API dla WWW i aplikacji mobilnej
 
 ## 1. Informacje podstawowe
