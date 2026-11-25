@@ -149,7 +149,7 @@ public class Offer_Repo {
             ps.setString(2, offer.getDescription());
             ps.setString(3, offer.getKategory());
             ps.setDouble(4, offer.getPrice());
-            ps.setLong(5, offer.getUser_id());
+            ps.setLong(5, offer.getId());
             ps.setLong(6, currentUserId);
 
             return ps;});

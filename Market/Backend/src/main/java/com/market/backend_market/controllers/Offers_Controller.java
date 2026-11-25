@@ -43,30 +43,19 @@ public class Offers_Controller {
     }
 
     @PostMapping("/addOffer")
-    public Boolean addOffer(@RequestBody Offer offer, @RequestParam Authentication authentication) {
-        if (offer_Repo.newOffer(offer, authentication)){
-            return true;
-        }else {
-            return false;
-        }
+    public Boolean addOffer(@RequestBody Offer offer, Authentication authentication) {
+    return offer_Repo.newOffer(offer, authentication);
     }
 
     @PutMapping("/updateOffer")
-    public Boolean updateOffer(@RequestBody Offer offer, @RequestParam Authentication authentication) {
-        if (offer_Repo.editOffer(offer, authentication)){
-            return true;
-        }else {
-            return false;
-        }
+    public Boolean updateOffer(@RequestBody Offer offer, Authentication authentication) {
+        return offer_Repo.editOffer(offer, authentication);
+
     }
 
     @DeleteMapping("/deleteOffer/{id}")
-    public Boolean deleteOffer(@PathVariable Long id, @RequestParam Authentication authentication) {
-        if (offer_Repo.deleteOffer(id, authentication)){
-            return true;
-        }else {
-            return false;
-        }
+    public Boolean deleteOffer(@PathVariable Long id, Authentication authentication) {
+        return  offer_Repo.deleteOffer(id, authentication);
     }
     @GetMapping
     public List<Offer> getOffers(
