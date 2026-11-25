@@ -3,3 +3,7 @@ Zdjęcia są przypisywane do ogłoszeń poprzez id_ogloszenia.
 Backend powinien obsługiwać zapisywanie plików w folderze Images oraz pobieranie ich na podstawie adresów zapisanych w bazie.
 Przykładowy adres: /images/telefon.jpg
 Jedno ogłoszenie może posiadać wiele zdjęć.
+
+Reszta:
+- Backend – zapisywanie zdjęć w folderze Images, zapisywanie adresów w bazie i udostępnianie plików.
+- Frontend – dodawanie i wyświetlanie zdjęć.
